@@ -1,9 +1,6 @@
 #include "stdlib.h"
 #include "stdio.h"
-#include "board.h"
-#include "player.h"
-#include "queue.h"
-#include "game.h"
+#include "alg.h"
 
 #define MAX_MOVES 8
 

@@ -1,0 +1,64 @@
+capture the flag variant 
+- flag is hardcoded as the "egg" of the snake (starting position)
+
+a player's objective is to capture the tile of the opposing player's egg/flag
+
+
+
+final draft
+- n (3) starting snakes, egg/flag is their starting position 
+- eggs can be placed anywhere on players side of the board 
+- enemy egg placement is not revealed until the round starts 
+- each turn, a player has a total of n (or n - 1) moves to allocate across the snakes 
+- every m turns, each snake molts (each tile except for egg and head become traversable)
+- objective is to capture each egg of the enemy snake 
+
+molting mechanic:
+- can be controlled by board
+- for each tile, if tile is snake but tile isn't head or egg, reset to empty 
+
+tile (uint8_t):
+- is_snake
+- p0 or p1 
+- is_egg
+- is_head (lmb)
+ex. 
+
+0000[is_snake][p0, p1][is_egg][is_head]
+
+00001001
+
+
+getting available moves:
+- for each snake in p->snakes
+- check tiles surrounding snake->head 
+- if empty, then its a valid move 
+
+but what if we're trying to let a player allocate 2+ moves to a single snake?
+curr method would return max of 3 snakes * 8 max-moves = 24 available moves to choose 2 from 
+factoring in chains of up to 2 moves would be max of 3 * 8 * 8 = 192 available moves to choose from         
+
+typedef struct loc {
+    int x;
+    int y;
+} loc_t;
+
+
+typedef struct board {
+    int m;
+    int n;
+    tile_t **grid;
+} board_t;
+
+typedef struct player {
+    char *name;
+    char pattern;
+    snake_t** snakes;
+
+} player_t;
+
+typedef struct snake {
+    uint8_t hx;
+    uint8_t hy;
+    player_t* p;
+} snake_t;
